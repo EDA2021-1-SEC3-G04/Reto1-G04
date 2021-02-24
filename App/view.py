@@ -59,6 +59,31 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 
+def printVideos(dict_video):
+    titulo = dict_video['title']
+    channel_title = dict_video['channel_title']
+    trending_date = dict_video['trending_date']
+    country = dict_video['country']
+    views = dict_video['views']
+    likes = dict_video['likes']
+    dislikes = dict_video['dislikes']
+
+    print("Titulo: " + titulo +
+          " \tChannel_title: " + channel_title +
+          " \tTrending_date: " + trending_date +
+          " \tCountry: " + country +
+          " \tViews: " + views +
+          "\tLikes: " + likes +
+          "\tDislikes: " + dislikes)
+
+
+def printCategories(category_ids):
+    print('\nCategorías cargadas (Id y nombre)')
+    for id_name in category_ids['elements']:
+        print('Id #:', id_name['id'], '\tName:', id_name['name'])
+    print('\n')
+
+
 catalog = None
 
 """
@@ -81,28 +106,10 @@ while True:
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
 
         print('Primer video:')
-        dict_video = lt.firstElement(catalog['videos'])
-        titulo = dict_video['title']
-        channel_title = dict_video['channel_title']
-        trending_date = dict_video['trending_date']
-        country = dict_video['country']
-        views = dict_video['views']
-        likes = dict_video['likes']
-        dislikes = dict_video['dislikes']
-
-        print("Titulo: " + titulo +
-              " \tChannel_title: " + channel_title +
-              " \tTrending_date: " + trending_date +
-              " \tCountry: " + country +
-              " \tViews: " + views +
-              "\tLikes: " + likes +
-              "\tDislikes: " + dislikes)
+        printVideos(lt.firstElement(catalog['videos']))
 
         category_ids = catalog['category-id']
-        print('\nCategorías cargadas (Id y nombre)')
-        for id_name in category_ids['elements']:
-            print('Id #:', id_name['id'], '\tName:', id_name['name'])
-        print('\n')
+        printCategories(category_ids)
 
     elif int(inputs[0]) == 2:
         size = int(input("Indique el tamaño de la muestra: "))
@@ -112,15 +119,15 @@ while True:
             sort_type = int(input())
 
             # number = input("Buscando los top?: ")
-            # country = input("¿De qué país quiere consultar los top x videos? ")
-            # category = input("¿De qué categoria quiere consultar los videos?")
+            # country = input("¿De qué país quiere consultar los top", number, "videos?")
+            # category = input("¿De qué categoria quiere consultar top", number, "videos? ")
 
             result = controller.sortViews(catalog, size, sort_type)
             print("Para la muestra de", size,
                   "elementos, el tiempo (mseg) es: ", str(result[0]))
 
         else:
-            print('La muestra que desea es mayor a la cantidad de datos almacenadas')
+            print('La muestra que desea es mayor a la cantidad de datos almacenados')
     else:
         sys.exit(0)
 sys.exit(0)
