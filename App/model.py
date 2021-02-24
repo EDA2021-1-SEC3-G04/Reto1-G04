@@ -72,8 +72,8 @@ def compVideosByViews(video1, video2):
         video1: informacion del primer video que incluye su valor 'views'
         video2: informacion del segundo video que incluye su valor 'views'
     """
-    views1 = video1["views"]
-    views2 = video2["views"]
+    views1 = int(video1["views"])
+    views2 = int(video2["views"])
 
     return views1 < views2
 

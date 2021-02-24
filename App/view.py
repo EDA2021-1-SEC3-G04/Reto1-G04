@@ -118,6 +118,7 @@ while True:
             result = controller.sortViews(catalog, size, sort_type)
             print("Para la muestra de", size,
                   "elementos, el tiempo (mseg) es: ", str(result[0]))
+
         else:
             print('La muestra que desea es mayor a la cantidad de datos almacenadas')
     else:
