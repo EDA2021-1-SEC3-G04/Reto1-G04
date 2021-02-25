@@ -66,6 +66,10 @@ def sortViews(catalog, size, sort_type):
         return model.sortVideosInsertion(catalog, size)
     if sort_type == 3:
         return model.sortVideosShell(catalog, size)
+    if sort_type == 4:
+        return model.sortVideosMerge(catalog, size)
+    if sort_type == 5:
+        return model.sortVideosQuick(catalog, size)
 
 
 # Funciones de ordenamiento
