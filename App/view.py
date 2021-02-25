@@ -98,7 +98,7 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         print("¿Qué tipo de estructura de datos quiere usar?")
-        tipo_de_dato = int(input("\n1.Array List\n 2.Single Linked\n"))
+        tipo_de_dato = int(input("\n 1.Array List\n 2.Single Linked\n"))
         if tipo_de_dato == 1:
             tipo_de_dato = 'ARRAY_LIST'
         elif tipo_de_dato == 2:
