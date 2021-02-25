@@ -77,7 +77,12 @@ def compVideosByViews(video1, video2):
     views1 = int(video1["views"])
     views2 = int(video2["views"])
 
-    return views1 < views2
+    if views1 == views2:
+        return 0
+    elif views1 > views2:
+        return 1
+    else:
+        return 0
 
 
 def sortVideosSelection(catalog, size):
