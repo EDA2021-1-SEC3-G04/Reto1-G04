@@ -34,6 +34,9 @@ se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
 
+default_limit = 10000
+sys.setrecursionlimit(default_limit*10)
+
 
 def printMenu():
     print("Bienvenido")
@@ -59,6 +62,31 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 
+def printVideos(dict_video):
+    titulo = dict_video['title']
+    channel_title = dict_video['channel_title']
+    trending_date = dict_video['trending_date']
+    country = dict_video['country']
+    views = dict_video['views']
+    likes = dict_video['likes']
+    dislikes = dict_video['dislikes']
+
+    print("Titulo: " + titulo +
+          " \tChannel_title: " + channel_title +
+          " \tTrending_date: " + trending_date +
+          " \tCountry: " + country +
+          " \tViews: " + views +
+          "\tLikes: " + likes +
+          "\tDislikes: " + dislikes)
+
+
+def printCategories(category_ids):
+    print('\nCategorías cargadas (Id y nombre)')
+    for id_name in category_ids['elements']:
+        print('Id #:', id_name['id'], '\tName:', id_name['name'])
+    print('\n')
+
+
 catalog = None
 
 """
@@ -69,8 +97,8 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        tipo_de_dato = int(input(
-            "¿Qué tipo de estructura de datos quiere usar?\n 1.Array List\n 2.Single Linked\n"))
+        print("¿Qué tipo de estructura de datos quiere usar?")
+        tipo_de_dato = int(input("\n 1.Array List\n 2.Single Linked\n"))
         if tipo_de_dato == 1:
             tipo_de_dato = 'ARRAY_LIST'
         elif tipo_de_dato == 2:
@@ -81,43 +109,26 @@ while True:
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
 
         print('Primer video:')
-        dict_video = lt.firstElement(catalog['videos'])
-        titulo = dict_video['title']
-        channel_title = dict_video['channel_title']
-        trending_date = dict_video['trending_date']
-        country = dict_video['country']
-        views = dict_video['views']
-        likes = dict_video['likes']
-        dislikes = dict_video['dislikes']
-
-        print("Titulo: " + titulo +
-              " \tChannel_title: " + channel_title +
-              " \tTrending_date: " + trending_date +
-              " \tCountry: " + country +
-              " \tViews: " + views +
-              "\tLikes: " + likes +
-              "\tDislikes: " + dislikes)
+        printVideos(lt.firstElement(catalog['videos']))
 
         category_ids = catalog['category-id']
-        print('\nCategorías cargadas (Id y nombre)')
-        for id_name in category_ids['elements']:
-            print('Id #:', id_name['id'], '\tName:', id_name['name'])
-        print('\n')
+        printCategories(category_ids)
 
     elif int(inputs[0]) == 2:
         size = int(input("Indique el tamaño de la muestra: "))
         if size <= lt.size(catalog['videos']):
-            print(
-                "¿Qué tipo de ordenamiento quiere?\n1.Selection Sort \n2.Insertion Sort \n3.Shell Sort\n")
+            print("¿Qué tipo de ordenamiento quiere?\n",
+                  "1.Selection Sort \n2.Insertion Sort \n3.Shell Sort\n4.Merge Sort\n5.QuickSort")
             sort_type = int(input())
 
             # number = input("Buscando los top?: ")
-            # country = input("¿De qué país quiere consultar los top x videos? ")
-            # category = input("¿De qué categoria quiere consultar los videos?")
+            # country = input("¿De qué país quiere consultar los top", number, "videos?")
+            # category = input("¿De qué categoria quiere consultar top", number, "videos? ")
 
             result = controller.sortViews(catalog, size, sort_type)
             print("Para la muestra de", size,
                   "elementos, el tiempo (mseg) es: ", str(result[0]))
+
         else:
             print('La muestra que desea es mayor a la cantidad de datos almacenadas')
     elif int(inputs[0]) == 3:
@@ -138,6 +149,7 @@ while True:
             print('Días trending: ', trend_days)
         else:
             print('Categoria no válida')
+
     else:
         sys.exit(0)
 sys.exit(0)

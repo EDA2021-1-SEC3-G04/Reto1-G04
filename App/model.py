@@ -32,6 +32,7 @@ from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Sorting import selectionsort as sel
 from DISClib.Algorithms.Sorting import insertionsort as ins
 from DISClib.Algorithms.Sorting import mergesort as mer
+from DISClib.Algorithms.Sorting import quicksort as quk
 assert cf
 
 '''
@@ -174,10 +175,15 @@ def compVideosByViews(video1, video2):
         video1: informacion del primer video que incluye su valor 'views'
         video2: informacion del segundo video que incluye su valor 'views'
     """
-    views1 = video1["views"]
-    views2 = video2["views"]
+    views1 = int(video1["views"])
+    views2 = int(video2["views"])
 
-    return views1 < views2
+    if views1 == views2:
+        return 0
+    elif views1 > views2:
+        return 1
+    else:
+        return 0
 
 
 
@@ -218,6 +224,26 @@ def sortVideosShell(catalog, size):
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, sorted_list
 
+
+def sortVideosMerge(catalog, size):
+    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = sub_list.copy()
+    start_time = time.process_time()
+    sorted_list = mer.sort(sub_list, compVideosByViews)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, sorted_list
+
+
+def sortVideosQuick(catalog, size):
+    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = sub_list.copy()
+    start_time = time.process_time()
+    sorted_list = quk.sort(sub_list, compVideosByViews)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, sorted_list
+  
 
 def sortCategory(category_list):
     cat_sort = category_list.copy()
