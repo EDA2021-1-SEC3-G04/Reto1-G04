@@ -144,7 +144,7 @@ def findTopVideo(category_list):
         current_elem = lt.getElement(category_list, pos)
         next_elem = lt.getElement(category_list, pos + 1)
 
-        if current_elem['title'] == next_elem['title']:
+        if current_elem['video_id'] != '#NAME' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
             reps_per_video.append(
@@ -166,7 +166,6 @@ def findTopVideo(category_list):
 
 def findTopsCountryCategory(sorted_cat_list, number, country): 
     topVideos = lt.newList(datastructure='ARRAY_LIST')
-    
     pos = 1
     while number > 0: 
         video = lt.getElement(sorted_cat_list, pos)
@@ -270,7 +269,7 @@ def findTopVideoCountries(country_list):
         current_elem = lt.getElement(country_list, pos)
         next_elem = lt.getElement(country_list, pos + 1)
 
-        if current_elem['title'] == next_elem['title']:
+        if current_elem['video_id'] != '#NAME' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
             reps_per_video.append(
