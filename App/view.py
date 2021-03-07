@@ -87,12 +87,12 @@ def printCategories(category_ids):
     print('\n')
 
 
-def printTopVideos(video_list): 
+def printTopVideos(video_list):  
     for video in video_list['elements']: 
         print('Trending date:', video['trending_date'], '––Title:', video['title'], '––Channel:', video['channel_title'], '––Publish time:', video['publish_time'], '––Views:', video['views'], '––Likes:', video['likes'], '––Dislikes:', video['dislikes'])
         input('Presione enter para ver el siguente video')
         print('*'*50)
-
+    print('Fin\n')
 catalog = None
 
 """
@@ -107,7 +107,7 @@ while True:
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
 
-        print('Primer video:')
+        print('\n Primer video:')
         printVideos(lt.firstElement(catalog['videos']))
 
         category_ids = catalog['category-id']
@@ -119,6 +119,7 @@ while True:
         country = input("Pais a consultar los top " + str(number) + " videos: ")
         category = input("Categoria a consultar los top " + str(number) + " videos: ")
         result = controller.topCountryCategory(catalog, number, country, category)
+        print("\nLos top", number, "videos de", country, "&", category, "son:\n")
         printTopVideos(result)
     elif int(inputs[0]) == 3:
         pass
@@ -132,10 +133,10 @@ while True:
             top_video = controller.topVidByCategory(catalog, category_id)
             video = top_video[0]
             trend_days = top_video[1]
-            print('El video más trending de', category_name, 'fue:')
+            print('\nEl video más trending de', category_name, 'fue:')
             print('Título:', video['title'], ' Canal: ', video['channel_title'],
                   '  Category Id', video['category_id'])
-            print('Días trending: ', trend_days)
+            print('Días trending: ', trend_days, '\n')
         else:
             print('Categoria no válida')
 
