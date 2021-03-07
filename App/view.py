@@ -48,11 +48,11 @@ def printMenu():
     print("0- Salir")
 
 
-def initCatalog(tipo_de_dato):
+def initCatalog():
     """
     Inicializa el catalogo de videos
     """
-    return controller.initCatalog(tipo_de_dato)
+    return controller.initCatalog()
 
 
 def loadData(catalog):
@@ -87,6 +87,12 @@ def printCategories(category_ids):
     print('\n')
 
 
+def printTopVideos(video_list): 
+    for video in video_list['elements']: 
+        print('Trending date:', video['trending_date'], '––Title:', video['title'], '––Channel:', video['channel_title'], '––Publish time:', video['publish_time'], '––Views:', video['views'], '––Likes:', video['likes'], '––Dislikes:', video['dislikes'])
+        input('Presione enter para ver el siguente video')
+        print('*'*50)
+
 catalog = None
 
 """
@@ -109,11 +115,11 @@ while True:
 
     elif int(inputs[0]) == 2:
         
-        number = input("Buscando los top: ")
-        country = input("Pais a consultar los top", number, "videos: ")
-        category = input("Categoria a consultar los top ", number, "videos? ")
-        result = controller.sortViews(catalog, number, country, category)
-        
+        number = int(input("Buscando los top: "))
+        country = input("Pais a consultar los top " + str(number) + " videos: ")
+        category = input("Categoria a consultar los top " + str(number) + " videos: ")
+        result = controller.topCountryCategory(catalog, number, country, category)
+        printTopVideos(result)
     elif int(inputs[0]) == 3:
         pass
 

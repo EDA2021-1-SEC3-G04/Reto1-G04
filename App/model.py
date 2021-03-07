@@ -26,7 +26,7 @@
 
 
 import config as cf
-import time
+# import time
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Sorting import selectionsort as sel
@@ -148,8 +148,9 @@ def findTopVideo(category_list):
 
     return top_video, top_reps
 
+
 def findTopsCountryCategory(sorted_cat_list, number, country): 
-    topVideos = lt.newList()
+    topVideos = lt.newList(datastructure='ARRAY_LIST')
     
     pos = 1
     while number > 0: 
@@ -199,7 +200,6 @@ def compVideosByViews(video1, video2):
         return 0
 
 
-
 # Funciones de ordenamiento
 
 def sortVideoId(category_list):
@@ -207,10 +207,12 @@ def sortVideoId(category_list):
     vid_id_sort = mer.sort(vid_id_sort, cmpVideoIdSort)
     return vid_id_sort
 
+
 def sortViews(catalog):
     sub_list = catalog.copy()
     sorted_list = mer.sort(sub_list, compVideosByViews)
     return sorted_list
+
 
 def sortCategory(category_list):
     cat_sort = category_list.copy()
@@ -246,10 +248,6 @@ def sortCategory(category_list):
 #     stop_time = time.process_time()
 #     elapsed_time_mseg = (stop_time - start_time)*1000
 #     return elapsed_time_mseg, sorted_list
-
-
-
-
 
 # def sortVideosQuick(catalog, size):
 #     sub_list = lt.subList(catalog['videos'], 0, size)

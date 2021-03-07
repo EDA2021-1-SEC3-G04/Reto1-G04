@@ -85,11 +85,14 @@ def topVidByCategory(catalog, category_id):
 def findTopVideo(category_list):
     return model.findTopVideo(category_list)
 
+
 def topCountryCategory(catalog, number, country, category): 
     category_id = getId(catalog['category-id'], category)
     category_list = model.getCategory(catalog, category_id)
-    sorted_cat_list = sortViews(category_list)
+    sorted_cat_list = sortViews(category_list['videos'])
     top_vids = findTopsCountryCategory(sorted_cat_list, number, country)
+    return top_vids
+
 
 def findTopsCountryCategory(sorted_cat_list, number, country): 
     return model.findTopsCountryCategory(sorted_cat_list, number, country)
