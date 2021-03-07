@@ -149,6 +149,7 @@ def findTopVideo(category_list):
     return top_video, top_reps
 
 
+
 def findTopsCountryCategory(sorted_cat_list, number, country): 
     topVideos = lt.newList(datastructure='ARRAY_LIST')
     
@@ -218,6 +219,53 @@ def sortCategory(category_list):
     cat_sort = category_list.copy()
     cat_sort = mer.sort(cat_sort, cmpCategories)
     return cat_sort
+
+
+#Requerimiento 2
+def getcountry(countries, country):
+    for item in lt.iterator(countries):
+        if item['name'] == country:
+            return item['by_countries']
+
+def getCountry(catalog, countrycatalog):
+    cant_country = lt.isPresent(catalog['by_countries'], country)
+    if cant_country > 0:
+        country_list = lt.getElement(catalog['by_countries'], cant_country)
+        return country_list
+    return None
+    
+def sortVideoCountry(country_list):
+    vid_country_sort = country_list.copy()
+    vid_country_sort = mer.sort(vid_country_sort, cmpVideoVideoSort)
+    return vid_country_sort
+
+
+def findTopVideoCountries(country_list):
+    pos = 1
+    reps_per_video = []
+    current_reps = 1
+    while pos < lt.size(country_list) - 1:
+        current_elem = lt.getElement(country_list, pos)
+        next_elem = lt.getElement(country_list, pos + 1)
+
+        if current_elem['title'] == next_elem['title']:
+            current_reps += 1
+        else:
+            reps_per_video.append(
+                {'video': current_elem, 'reps': current_reps})
+            current_reps = 1
+
+        pos += 1
+
+    top_video = []
+    top_reps = 0
+    for item in reps_per_video:
+        if item['reps'] > top_reps:
+            top_reps = item['reps']
+            top_video = item['video']
+
+    return top_video, top_reps
+
 
 
 # def sortVideosSelection(catalog, size):
