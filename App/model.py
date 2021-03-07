@@ -48,7 +48,7 @@ def newCatalog():
                'category-id': None}
 
     catalog['videos'] = lt.newList(datastructure='ARRAY_LIST')
-    catalog['by_countries'] = lt.newList(datastructure='ARRAY_LIST')
+    catalog['by_countries'] = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpCountries)
     catalog['by_categories'] = lt.newList(
         datastructure='ARRAY_LIST', cmpfunction=cmpCategories)
     catalog['category-id'] = lt.newList(datastructure='ARRAY_LIST')
@@ -72,18 +72,25 @@ def addCategory(catalog, category):
 
 
 def addVideoCountry(catalog, country, video):
-    pass
+    countries_list = catalog['by_countries']
+    posCountry = lt.isPresent(countries_list, country)
 
+    if posCountry > 0:
+        new_country = lt.getElement(countries_list, posCountry)
+    else: 
+        new_country = newCountry(country)
+        lt.addLast(countries_list, new_country)
+    lt.addLast(new_country['videos'], video)
 
 def addVideoCategory(catalog, category_id, video):
-    categories = catalog['by_categories']
-    posCategory = lt.isPresent(categories, category_id)
+    categories_list = catalog['by_categories']
+    posCategory = lt.isPresent(categories_list, category_id)
 
     if posCategory > 0:  # La categoria ya ha sido creada dentro de la lista
-        category = lt.getElement(categories, posCategory)
+        category = lt.getElement(categories_list, posCategory)
     else:  # Debemos crear una nueva categoria
         category = newCategory(category_id)
-        lt.addLast(categories, category)
+        lt.addLast(categories_list, category)
 
     lt.addLast(category['videos'], video)
 
@@ -92,8 +99,15 @@ def addVideoCategory(catalog, category_id, video):
 def newCategory(category_id):
     category_dict = {'id': 0, "videos": None}
     category_dict['id'] = category_id
-    category_dict['videos'] = lt.newList('ARRAY_LIST')
+    category_dict['videos'] = lt.newList(datastructure='ARRAY_LIST')
     return category_dict
+
+
+def newCountry(country):
+    country_dict = {'name': '', "videos": None}
+    country_dict['name'] = country
+    country_dict["videos"] = lt.newList(datastructure='ARRAY_LIST')
+    return country_dict
 
 
 def newCategoryId(id, name):
@@ -178,6 +192,13 @@ def cmpCategories(category_id, category):
     else:
         return 0
 
+def cmpCountries(country1, country2):
+    if country1 < country2['name']:
+        return -1
+    elif country1 > country2['name']:
+        return 1
+    else:
+        return 0
 
 def cmpCategoriesSort(video1, video2):
     return video1['category_id'] < video2['category_id']
@@ -222,21 +243,22 @@ def sortCategory(category_list):
 
 
 #Requerimiento 2
-def getcountry(countries, country):
+def getCountry(countries, country):
     for item in lt.iterator(countries):
         if item['name'] == country:
-            return item['by_countries']
+            return item
+    return None
 
-def getCountry(catalog, countrycatalog):
-    cant_country = lt.isPresent(catalog['by_countries'], country)
+def getCountryList(catalog, countrycatalog):
+    cant_country = lt.isPresent(catalog['by_countries'], countrycatalog)
     if cant_country > 0:
         country_list = lt.getElement(catalog['by_countries'], cant_country)
         return country_list
     return None
     
-def sortVideoCountry(country_list):
-    vid_country_sort = country_list.copy()
-    vid_country_sort = mer.sort(vid_country_sort, cmpVideoVideoSort)
+# def sortVideoCountry(country_list):
+#     vid_country_sort = country_list.copy()
+#     vid_country_sort = mer.sort(vid_country_sort, cmpCountry)
     return vid_country_sort
 
 

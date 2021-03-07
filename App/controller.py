@@ -99,12 +99,11 @@ def findTopsCountryCategory(sorted_cat_list, number, country):
 
 #Requerimiento 2
 
-def getcountry(countries, country):
-    return model.getcountry(countries, country)
+def getCountry(countries, country):
+    return model.getCountry(countries, country)
 
-def topVidByCountry(countries, country):
-    country_list = model.getCountry(catalog, country)
-    sorted_country_lst = sortVideoCountry(country_list['videos'])
+def topVidByCountry(country_list):
+    sorted_country_lst = sortVideoId(country_list['videos'])
     top_countries = findTopVideo(sorted_country_lst)
     return top_countries
 
@@ -112,4 +111,4 @@ def sortVideoCountry(country_list):
     return model.sortVideoCountry(country_list)
 
 def findTopVideo(country_list):
-    return model.findTopVideoCountries(category_list)
+    return model.findTopVideoCountries(country_list)

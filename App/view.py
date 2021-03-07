@@ -125,19 +125,18 @@ while True:
     elif int(inputs[0]) == 3:
         country = input(
             "País a consultar el video trending x más dias: ")
-        countries = catalog['by_countries']
-        countrycatalog = controller.getcountry(countries, country)
-        if countrycatalog is not None:
-            top_video = controller.topVidByCountry(countries, country)
+        countries_list = catalog['by_countries']
+        valid_country = controller.getCountry(countries_list, country)
+        if valid_country is not None:
+            top_video = controller.topVidByCountry(valid_country)
             video = top_video[0]
             trend_days = top_video[1]
             print('\nEl video más trending de', country, 'fue:')
             print('Título:', video['title'], ' Canal: ', video['channel_title'],
-                  '  Country', video['country'])
+                  '  Country: ', video['country'])
             print('Días trending: ', trend_days, '\n')
         else:
             print('País no válido')
-
 
     elif int(inputs[0]) == 4:
         category_name = input(
