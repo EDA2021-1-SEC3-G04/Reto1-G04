@@ -32,9 +32,8 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros
 
-def initCatalog(tipo_de_dato):
-    # TODO: dejar solo 'ARRAY_LIST'
-    catalog = model.newCatalog(tipo_de_dato)
+def initCatalog():
+    catalog = model.newCatalog()
     return catalog
 
 # Funciones para la carga de datos
@@ -66,18 +65,8 @@ def sortVideoId(category_list):
     return model.sortVideoId(category_list)
 
 
-def sortViews(catalog, size, sort_type):
-    # TODO: dejar solo mergesort
-    if sort_type == 1:
-        return model.sortVideosSelection(catalog, size)
-    if sort_type == 2:
-        return model.sortVideosInsertion(catalog, size)
-    if sort_type == 3:
-        return model.sortVideosShell(catalog, size)
-    if sort_type == 4:
-        return model.sortVideosMerge(catalog, size)
-    if sort_type == 5:
-        return model.sortVideosQuick(catalog, size)
+def sortViews(views_list):
+    return model.sortViews(views_list)
 
 
 # Funciones de consulta sobre el catálogo
@@ -95,3 +84,12 @@ def topVidByCategory(catalog, category_id):
 
 def findTopVideo(category_list):
     return model.findTopVideo(category_list)
+
+def topCountryCategory(catalog, number, country, category): 
+    category_id = getId(catalog['category-id'], category)
+    category_list = model.getCategory(catalog, category_id)
+    sorted_cat_list = sortViews(category_list)
+    top_vids = findTopsCountryCategory(sorted_cat_list, number, country)
+
+def findTopsCountryCategory(sorted_cat_list, number, country): 
+    return model.findTopsCountryCategory(sorted_cat_list, number, country)

@@ -41,13 +41,13 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 
 
 # Construccion de modelos
-def newCatalog(tipo_de_dato):
+def newCatalog():
     catalog = {'videos': None,
                'by_countries': None,
                'by_categories': None,
                'category-id': None}
 
-    catalog['videos'] = lt.newList(datastructure=tipo_de_dato)
+    catalog['videos'] = lt.newList(datastructure='ARRAY_LIST')
     catalog['by_countries'] = lt.newList(datastructure='ARRAY_LIST')
     catalog['by_categories'] = lt.newList(
         datastructure='ARRAY_LIST', cmpfunction=cmpCategories)
@@ -148,6 +148,19 @@ def findTopVideo(category_list):
 
     return top_video, top_reps
 
+def findTopsCountryCategory(sorted_cat_list, number, country): 
+    topVideos = lt.newList()
+    
+    pos = 1
+    while number > 0: 
+        video = lt.getElement(sorted_cat_list, pos)
+        if video['country'] == country: 
+            lt.addLast(topVideos, video)
+            number -= 1
+        pos += 1
+
+    return topVideos
+        
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -194,58 +207,58 @@ def sortVideoId(category_list):
     vid_id_sort = mer.sort(vid_id_sort, cmpVideoIdSort)
     return vid_id_sort
 
-
-def sortVideosSelection(catalog, size):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
-    start_time = time.process_time()
-    sorted_list = sel.sort(sub_list, compVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-
-
-def sortVideosInsertion(catalog, size):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
-    start_time = time.process_time()
-    sorted_list = ins.sort(sub_list, compVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-
-
-def sortVideosShell(catalog, size):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
-    start_time = time.process_time()
-    sorted_list = sa.sort(sub_list, compVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-
-
-def sortVideosMerge(catalog, size):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
-    start_time = time.process_time()
+def sortViews(catalog):
+    sub_list = catalog.copy()
     sorted_list = mer.sort(sub_list, compVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-
-
-def sortVideosQuick(catalog, size):
-    sub_list = lt.subList(catalog['videos'], 0, size)
-    sub_list = sub_list.copy()
-    start_time = time.process_time()
-    sorted_list = quk.sort(sub_list, compVideosByViews)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-  
+    return sorted_list
 
 def sortCategory(category_list):
     cat_sort = category_list.copy()
     cat_sort = mer.sort(cat_sort, cmpCategories)
     return cat_sort
+
+
+# def sortVideosSelection(catalog, size):
+#     sub_list = lt.subList(catalog['videos'], 0, size)
+#     sub_list = sub_list.copy()
+#     start_time = time.process_time()
+#     sorted_list = sel.sort(sub_list, compVideosByViews)
+#     stop_time = time.process_time()
+#     elapsed_time_mseg = (stop_time - start_time)*1000
+#     return elapsed_time_mseg, sorted_list
+
+
+# def sortVideosInsertion(catalog, size):
+#     sub_list = lt.subList(catalog['videos'], 0, size)
+#     sub_list = sub_list.copy()
+#     start_time = time.process_time()
+#     sorted_list = ins.sort(sub_list, compVideosByViews)
+#     stop_time = time.process_time()
+#     elapsed_time_mseg = (stop_time - start_time)*1000
+#     return elapsed_time_mseg, sorted_list
+
+
+# def sortVideosShell(catalog, size):
+#     sub_list = lt.subList(catalog['videos'], 0, size)
+#     sub_list = sub_list.copy()
+#     start_time = time.process_time()
+#     sorted_list = sa.sort(sub_list, compVideosByViews)
+#     stop_time = time.process_time()
+#     elapsed_time_mseg = (stop_time - start_time)*1000
+#     return elapsed_time_mseg, sorted_list
+
+
+
+
+
+# def sortVideosQuick(catalog, size):
+#     sub_list = lt.subList(catalog['videos'], 0, size)
+#     sub_list = sub_list.copy()
+#     start_time = time.process_time()
+#     sorted_list = quk.sort(sub_list, compVideosByViews)
+#     stop_time = time.process_time()
+#     elapsed_time_mseg = (stop_time - start_time)*1000
+#     return elapsed_time_mseg, sorted_list
+  
+
+

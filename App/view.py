@@ -97,14 +97,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        print("¿Qué tipo de estructura de datos quiere usar?")
-        tipo_de_dato = int(input("\n 1.Array List\n 2.Single Linked\n"))
-        if tipo_de_dato == 1:
-            tipo_de_dato = 'ARRAY_LIST'
-        elif tipo_de_dato == 2:
-            tipo_de_dato = 'SINGLE_LINKED'
-
-        catalog = initCatalog(tipo_de_dato)
+        catalog = initCatalog()
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
 
@@ -115,22 +108,12 @@ while True:
         printCategories(category_ids)
 
     elif int(inputs[0]) == 2:
-        size = int(input("Indique el tamaño de la muestra: "))
-        if size <= lt.size(catalog['videos']):
-            print("¿Qué tipo de ordenamiento quiere?\n",
-                  "1.Selection Sort \n2.Insertion Sort \n3.Shell Sort\n4.Merge Sort\n5.QuickSort")
-            sort_type = int(input())
-
-            # number = input("Buscando los top?: ")
-            # country = input("¿De qué país quiere consultar los top", number, "videos?")
-            # category = input("¿De qué categoria quiere consultar top", number, "videos? ")
-
-            result = controller.sortViews(catalog, size, sort_type)
-            print("Para la muestra de", size,
-                  "elementos, el tiempo (mseg) es: ", str(result[0]))
-
-        else:
-            print('La muestra que desea es mayor a la cantidad de datos almacenadas')
+        
+        number = input("Buscando los top: ")
+        country = input("Pais a consultar los top", number, "videos: ")
+        category = input("Categoria a consultar los top ", number, "videos? ")
+        result = controller.sortViews(catalog, number, country, category)
+        
     elif int(inputs[0]) == 3:
         pass
 
