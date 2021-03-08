@@ -154,6 +154,13 @@ while True:
         else:
             print('Categoria no válida')
 
+    elif int(inputs[0]) == 5: 
+        cant = input("Cantidad a consultar de videos con más likes: ")
+        tag = input("Tag específico a consultar de videos con más likes: ")
+        
+
+        
+
     else:
         sys.exit(0)
 sys.exit(0)
