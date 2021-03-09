@@ -202,6 +202,9 @@ def cmpCountries(country1, country2):
 def cmpCategoriesSort(video1, video2):
     return video1['category_id'] < video2['category_id']
 
+def cmpLikes(video1, video2): 
+    return int(video1['likes']) < int(video2['likes'])
+
 
 def compVideosByViews(video1, video2):
     """
@@ -240,6 +243,11 @@ def sortCategory(category_list):
     cat_sort = mer.sort(cat_sort, cmpCategories)
     return cat_sort
 
+def sortLikes(video_list): 
+    likes_sort = video_list.copy()
+    likes_sort = mer.sort(likes_sort, cmpLikes)
+    return likes_sort
+
 
 #Requerimiento 2
 def getCountry(countries, country):
@@ -258,7 +266,7 @@ def getCountryList(catalog, countrycatalog):
 # def sortVideoCountry(country_list):
 #     vid_country_sort = country_list.copy()
 #     vid_country_sort = mer.sort(vid_country_sort, cmpCountry)
-    return vid_country_sort
+#     return vid_country_sort
 
 
 def findTopVideoCountries(country_list):
@@ -289,6 +297,21 @@ def findTopVideoCountries(country_list):
 
 
 
+def findWithTags(list_vid_countries, tag):
+    tag_list = lt.newList(datastructure='ARRAY_LIST')
+
+    for video in lt.iterator(list_vid_countries['videos']):
+        current_tags = video['tags']
+        if tag in current_tags:
+            lt.addLast(tag_list, video)
+    return tag_list
+
+
+def findMostLikes(list_by_likes, number):
+    last = lt.lastElement(list_by_likes)
+    topVideos = lt.subList(list_by_likes, lt.size(list_by_likes) - number + 1, number)
+    return topVideos
+    
 # def sortVideosSelection(catalog, size):
 #     sub_list = lt.subList(catalog['videos'], 0, size)
 #     sub_list = sub_list.copy()

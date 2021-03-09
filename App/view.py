@@ -112,9 +112,7 @@ while True:
 
         category_ids = catalog['category-id']
         printCategories(category_ids)
-        print (catalog.keys())
-        print (type(catalog["by_categories"]))
-        print (catalog["by_categories"].keys())
+    
 
     elif int(inputs[0]) == 2:
         
@@ -161,14 +159,13 @@ while True:
     elif int(inputs[0]) == 5: 
         cant = input("Cantidad a consultar de videos con más likes: ")
         tag = input("Tag específico a consultar de videos con más likes: ")
-        country = input ("País a consultar el video trending x más dias: ")
-        list_vid_countries = controller.list_vid_countries(catalog,country)
-        list_vid_tag = controller.list_vid_tag(list_vid_countries,tag)
-        list_vid_likes = controller.list_vid_likes (list_vid_tag)
-        top_x = controlles.top_x(list_vid_likes, cant)
-        
+        country = input("País a consultar el video trending x más dias: ")
+        list_vid_countries = controller.getCountry(catalog['by_countries'], country)
+        if list_vid_countries is not None: 
+            list_vid_tag = controller.listVidTag(list_vid_countries, tag, int(cant))
 
-        
+        else: 
+            print('País no válido')
 
     else:
         sys.exit(0)
