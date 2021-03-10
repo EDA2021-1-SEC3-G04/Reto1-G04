@@ -144,7 +144,7 @@ def findTopVideo(category_list):
         current_elem = lt.getElement(category_list, pos)
         next_elem = lt.getElement(category_list, pos + 1)
 
-        if current_elem['video_id'] != '#NAME' and current_elem['video_id'] == next_elem['video_id']:
+        if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
             reps_per_video.append(
@@ -284,7 +284,7 @@ def findTopVideoCountries(country_list):
         current_elem = lt.getElement(country_list, pos)
         next_elem = lt.getElement(country_list, pos + 1)
 
-        if current_elem['video_id'] != '#NAME' and current_elem['video_id'] == next_elem['video_id']:
+        if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
             reps_per_video.append(
@@ -301,7 +301,6 @@ def findTopVideoCountries(country_list):
             top_video = item['video']
 
     return top_video, top_reps
-
 
 
 def findWithTags(list_vid_countries, tag):

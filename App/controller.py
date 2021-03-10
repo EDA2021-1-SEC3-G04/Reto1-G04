@@ -110,7 +110,7 @@ def topVidByCountry(country_list):
 # def sortVideoCountry(country_list):
 #     return model.sortVideoCountry(country_list)
 
-def findTopVideo(country_list):
+def findTopVideoCountry(country_list):
     return model.findTopVideoCountries(country_list)
 
 
@@ -118,6 +118,7 @@ def listVidTag(list_vid_countries, tag, cant):
     list_tags = model.findWithTags(list_vid_countries, tag)
     list_by_likes = sortLikes(list_tags)
     top_videos = findMostLikes(list_by_likes, cant)
+    return top_videos
 
 def sortLikes(list_sort): 
     return model.sortLikes(list_sort)

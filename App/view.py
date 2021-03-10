@@ -93,6 +93,16 @@ def printTopVideos(video_list):
         input('Presione enter para ver el siguente video')
         print('*'*50)
     print('Fin\n')
+
+def printTopVideosTags(list_vid_tag): 
+    for video in list_vid_tag['elements']:
+        print('Title:',  video['title'], '––Channel:', video['channel_title'],'––Publish Time: ', video['publish_time'], '––Views:', video['views'], '––Likes:', video['likes'], '––Dislikes:', video['dislikes'], '––Tags:', video['tags'])
+        input('Presione enter para ver el siguente video')
+        print('*'*50)
+    print('Fin\n')
+
+
+
 catalog = None
 
 """
@@ -163,7 +173,7 @@ while True:
         list_vid_countries = controller.getCountry(catalog['by_countries'], country)
         if list_vid_countries is not None: 
             list_vid_tag = controller.listVidTag(list_vid_countries, tag, int(cant))
-
+            printTopVideosTags(list_vid_tag)
         else: 
             print('País no válido')
 
