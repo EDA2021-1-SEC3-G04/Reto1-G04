@@ -1,4 +1,4 @@
-﻿'''
+﻿"""
  * Copyright 2020, Departamento de sistemas y Computación,
  * Universidad de Los Andes
  *
@@ -22,26 +22,27 @@
  * Contribuciones:
  *
  * Dario Correal - Version inicial
- '''
-
+ """
 
 import config as cf
 # import time
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
-from DISClib.Algorithms.Sorting import selectionsort as sel
-from DISClib.Algorithms.Sorting import insertionsort as ins
+# from DISClib.Algorithms.Sorting import shellsort as sa
+# from DISClib.Algorithms.Sorting import selectionsort as sel
+# from DISClib.Algorithms.Sorting import insertionsort as ins
 from DISClib.Algorithms.Sorting import mergesort as mer
-from DISClib.Algorithms.Sorting import quicksort as quk
+# from DISClib.Algorithms.Sorting import quicksort as quk
 assert cf
 
-'''
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de los mismos.
-'''
+
 
 
 # Construccion de modelos
+
 def newCatalog():
+    """
+    Se define la estructura de un catálogo de videos. El catálogo tendrá tres listas, una para los videos, otra para las categorias de los mismos y otra para los paises de los mismos.
+    """
     catalog = {'videos': None,
                'by_countries': None,
                'by_categories': None,
@@ -49,40 +50,54 @@ def newCatalog():
 
     catalog['videos'] = lt.newList(datastructure='ARRAY_LIST')
     catalog['by_countries'] = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpCountries)
-    catalog['by_categories'] = lt.newList(
-        datastructure='ARRAY_LIST', cmpfunction=cmpCategories)
+    catalog['by_categories'] = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpCategories)
     catalog['category-id'] = lt.newList(datastructure='ARRAY_LIST')
     return catalog
 
+
 # Funciones para agregar informacion al catalogo
 
-
 def addVideo(catalog, video):
+    """
+    Se añade un video a a lista de videos
+    """
     lt.addLast(catalog['videos'], video)
     country = video['country'].strip()
     category = int(video['category_id'].strip())
 
+    # Funciones para añadir datos a las listas de pais y categoria
     addVideoCountry(catalog, country, video)
     addVideoCategory(catalog, category, video)
 
 
 def addCategory(catalog, category):
+    """
+    Se añade una categoria (su id y nombre) a a lista de categoria
+    """
     c = newCategoryId(category['id'], category['name'])
     lt.addLast(catalog['category-id'], c)
 
 
 def addVideoCountry(catalog, country, video):
+    """
+    Adiciona un pais a lista de paises.
+    Las listas de cada pais guarda referencias a los videos de dicho pais
+    """
     countries_list = catalog['by_countries']
     posCountry = lt.isPresent(countries_list, country)
 
-    if posCountry > 0:
+    if posCountry > 0:  # El pais ya ha sido creada dentro de la lista
         new_country = lt.getElement(countries_list, posCountry)
-    else: 
+    else:   # Debemos crear nuevo pais
         new_country = newCountry(country)
         lt.addLast(countries_list, new_country)
     lt.addLast(new_country['videos'], video)
 
 def addVideoCategory(catalog, category_id, video):
+    """
+    Adiciona una categoria a lista de categorias si este no esta.
+    Las listas de cada pais guarda referencias a los videos de dicho pais
+    """
     categories_list = catalog['by_categories']
     posCategory = lt.isPresent(categories_list, category_id)
 
@@ -97,6 +112,9 @@ def addVideoCategory(catalog, category_id, video):
 
 # Funciones para creacion de datos
 def newCategory(category_id):
+    """
+    Crea una nueva estructura para modelar los videos de un category id
+    """
     category_dict = {'id': 0, "videos": None}
     category_dict['id'] = category_id
     category_dict['videos'] = lt.newList(datastructure='ARRAY_LIST')
@@ -104,6 +122,9 @@ def newCategory(category_id):
 
 
 def newCountry(country):
+    """
+    Crea una nueva estructura para modelar los videos de un pais
+    """
     country_dict = {'name': '', "videos": None}
     country_dict['name'] = country
     country_dict["videos"] = lt.newList(datastructure='ARRAY_LIST')
@@ -112,17 +133,20 @@ def newCountry(country):
 
 def newCategoryId(id, name):
     """
-        Crea un diccionario en el que guarda el nombre de la categoria y su id correpondiente
+    Crea un diccionario en el que guarda el nombre de la categoria y su id correpondiente
     """
     category = {'id': '', 'name': ''}
     category['id'] = int(id)
     category['name'] = name.strip()
     return category
 
+
 # Funciones de consulta
 
-
 def getCategory(catalog, category_id):
+    """
+    Retorna la lista de un dado id de categorias. Si no lo encuentra retorna None
+    """
     pos_id = lt.isPresent(catalog['by_categories'], category_id)
     if pos_id > 0:
         category_list = lt.getElement(catalog['by_categories'], pos_id)
@@ -131,12 +155,47 @@ def getCategory(catalog, category_id):
 
 
 def getId(category_ids, category_name):
+    """
+    Retorna la el id correspondiente a una categoria. Si no lo encuentra retorna None
+    """
     for item in lt.iterator(category_ids):
         if item['name'] == category_name:
             return item['id']
+    return None
+
+def getCountry(countries, country):
+    """
+    Retorna los datos de una pais (Nombre y videos correspondientes). Si no lo encuentra retorna None
+    """
+    for item in lt.iterator(countries):
+        if item['name'] == country:
+            return item
+    return None
+
+
+def findTopsCountryCategory(sorted_cat_list, number, country): 
+    """
+    Requerimiento 1
+    Crea una lista con los x videos con más views que corresponda a un  pais de una lista ordenada por views. 
+    """
+    topVideos = lt.newList(datastructure='ARRAY_LIST')
+    pos = 1
+    while number > 0 and pos < lt.size(sorted_cat_list): 
+        video = lt.getElement(sorted_cat_list, pos)
+        if video['country'] == country: 
+            lt.addLast(topVideos, video)
+            number -= 1
+        pos += 1
+
+    return topVideos
 
 
 def findTopVideo(category_list):
+    """
+    Requerimiento 3
+    Crea lista con una estructura para modelar cada video y las veces que este aparece dentro de una lista (cuantos dias ha sido trending). 
+    Con esa lista determina cuale de los videos ha tenido más dias trending. 
+    """
     pos = 1
     reps_per_video = []
     current_reps = 1
@@ -162,22 +221,75 @@ def findTopVideo(category_list):
 
     return top_video, top_reps
 
-
-
-def findTopsCountryCategory(sorted_cat_list, number, country): 
-    topVideos = lt.newList(datastructure='ARRAY_LIST')
+        
+def findTopVideoCountries(country_list):
+    """
+    Requerimiento 2
+    Crea lista con una estructura para modelar cada video y las veces que este aparece dentro de una lista (cuantos dias ha sido trending). 
+    Con esa lista determina cuale de los videos ha tenido más dias trending. 
+    """
     pos = 1
-    while number > 0: 
-        video = lt.getElement(sorted_cat_list, pos)
-        if video['country'] == country: 
-            lt.addLast(topVideos, video)
-            number -= 1
+    reps_per_video = []
+    current_reps = 1
+    while pos < lt.size(country_list) - 1:
+        current_elem = lt.getElement(country_list, pos)
+        next_elem = lt.getElement(country_list, pos + 1)
+
+        if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
+            current_reps += 1
+        else:
+            reps_per_video.append(
+                {'video': current_elem, 'reps': current_reps})
+            current_reps = 1
+
         pos += 1
 
-    return topVideos
+    top_video = []
+    top_reps = 0
+    for item in reps_per_video:
+        if item['reps'] > top_reps:
+            top_reps = item['reps']
+            top_video = item['video']
+
+    return top_video, top_reps
+
+
+def findWithTags(list_vid_countries, tag):
+    tag_list = lt.newList(datastructure='ARRAY_LIST')
+
+    for video in lt.iterator(list_vid_countries['videos']):
+        current_tags = video['tags']
+        if tag in current_tags:
+            lt.addLast(tag_list, video)
+    return tag_list
+
+
+def findMostLikes(list_by_likes, number):
+    """
+    Requerimiento 1
+    Crea una lista con los x videos con más likes dentro de una lista que ya esta ordenada. 
+    Si un video ya se encuntra en la lista no lo repite. 
+    """
+    pos = lt.size(list_by_likes)
+    topVideos = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpVideoId)
+    lt.addFirst(topVideos, lt.lastElement(list_by_likes))
+    number -= 1
+    while number > 0:
+        current_element = lt.getElement(list_by_likes, pos)
+        pos_present = lt.isPresent(topVideos, current_element)
+        if pos_present == 0:
+            lt.addLast(topVideos, current_element)
+            number -= 1
+        pos -= 1
         
+    return topVideos
+
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+# Las funcionese para los sort deben retornar True o False. 
+# El resto deben retornar -1, 0 , 1
 
 def cmpVideoIdSort(video1, video2):
     return video1['video_id'] < video2['video_id']
@@ -207,12 +319,6 @@ def cmpLikes(video1, video2):
 
 
 def compVideosByViews(video1, video2):
-    """
-    Devuelve verdadero (True) si los 'views' de video1 son menores que los del video2
-    Args:
-        video1: informacion del primer video que incluye su valor 'views'
-        video2: informacion del segundo video que incluye su valor 'views'
-    """
     views1 = int(video1["views"])
     views2 = int(video2["views"])
 
@@ -254,117 +360,3 @@ def sortLikes(video_list):
     likes_sort = video_list.copy()
     likes_sort = mer.sort(likes_sort, cmpLikes)
     return likes_sort
-
-
-#Requerimiento 2
-def getCountry(countries, country):
-    for item in lt.iterator(countries):
-        if item['name'] == country:
-            return item
-    return None
-
-def getCountryList(catalog, countrycatalog):
-    cant_country = lt.isPresent(catalog['by_countries'], countrycatalog)
-    if cant_country > 0:
-        country_list = lt.getElement(catalog['by_countries'], cant_country)
-        return country_list
-    return None
-    
-# def sortVideoCountry(country_list):
-#     vid_country_sort = country_list.copy()
-#     vid_country_sort = mer.sort(vid_country_sort, cmpCountry)
-#     return vid_country_sort
-
-
-def findTopVideoCountries(country_list):
-    pos = 1
-    reps_per_video = []
-    current_reps = 1
-    while pos < lt.size(country_list) - 1:
-        current_elem = lt.getElement(country_list, pos)
-        next_elem = lt.getElement(country_list, pos + 1)
-
-        if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
-            current_reps += 1
-        else:
-            reps_per_video.append(
-                {'video': current_elem, 'reps': current_reps})
-            current_reps = 1
-
-        pos += 1
-
-    top_video = []
-    top_reps = 0
-    for item in reps_per_video:
-        if item['reps'] > top_reps:
-            top_reps = item['reps']
-            top_video = item['video']
-
-    return top_video, top_reps
-
-
-def findWithTags(list_vid_countries, tag):
-    tag_list = lt.newList(datastructure='ARRAY_LIST')
-
-    for video in lt.iterator(list_vid_countries['videos']):
-        current_tags = video['tags']
-        if tag in current_tags:
-            lt.addLast(tag_list, video)
-    return tag_list
-
-
-def findMostLikes(list_by_likes, number):
-    pos = lt.size(list_by_likes)
-    topVideos = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpVideoId)
-    lt.addFirst(topVideos, lt.lastElement(list_by_likes))
-    number -= 1
-    while number > 0:
-        current_element = lt.getElement(list_by_likes, pos)
-        pos_present = lt.isPresent(topVideos, current_element)
-        if pos_present == 0:
-            lt.addLast(topVideos, current_element)
-            number -= 1
-        pos -= 1
-        
-    return topVideos
-    
-# def sortVideosSelection(catalog, size):
-#     sub_list = lt.subList(catalog['videos'], 0, size)
-#     sub_list = sub_list.copy()
-#     start_time = time.process_time()
-#     sorted_list = sel.sort(sub_list, compVideosByViews)
-#     stop_time = time.process_time()
-#     elapsed_time_mseg = (stop_time - start_time)*1000
-#     return elapsed_time_mseg, sorted_list
-
-
-# def sortVideosInsertion(catalog, size):
-#     sub_list = lt.subList(catalog['videos'], 0, size)
-#     sub_list = sub_list.copy()
-#     start_time = time.process_time()
-#     sorted_list = ins.sort(sub_list, compVideosByViews)
-#     stop_time = time.process_time()
-#     elapsed_time_mseg = (stop_time - start_time)*1000
-#     return elapsed_time_mseg, sorted_list
-
-
-# def sortVideosShell(catalog, size):
-#     sub_list = lt.subList(catalog['videos'], 0, size)
-#     sub_list = sub_list.copy()
-#     start_time = time.process_time()
-#     sorted_list = sa.sort(sub_list, compVideosByViews)
-#     stop_time = time.process_time()
-#     elapsed_time_mseg = (stop_time - start_time)*1000
-#     return elapsed_time_mseg, sorted_list
-
-# def sortVideosQuick(catalog, size):
-#     sub_list = lt.subList(catalog['videos'], 0, size)
-#     sub_list = sub_list.copy()
-#     start_time = time.process_time()
-#     sorted_list = quk.sort(sub_list, compVideosByViews)
-#     stop_time = time.process_time()
-#     elapsed_time_mseg = (stop_time - start_time)*1000
-#     return elapsed_time_mseg, sorted_list
-  
-
-

@@ -39,6 +39,9 @@ sys.setrecursionlimit(default_limit*10)
 
 
 def printMenu():
+    """
+    Imprime el menu
+    """
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Consultar los Top x videos por país y categoría")
@@ -63,6 +66,9 @@ def loadData(catalog):
 
 
 def printVideos(dict_video):
+    """
+    Imprime el primer video que se cargo en el catalogo
+    """
     titulo = dict_video['title']
     channel_title = dict_video['channel_title']
     trending_date = dict_video['trending_date']
@@ -81,13 +87,20 @@ def printVideos(dict_video):
 
 
 def printCategories(category_ids):
+    """
+    Imprime los id de las categorias y su respectivo nombre
+    """
     print('\nCategorías cargadas (Id y nombre)')
     for id_name in category_ids['elements']:
         print('Id #:', id_name['id'], '\tName:', id_name['name'])
     print('\n')
 
 
-def printTopVideos(video_list):  
+def printTopVideos(video_list): 
+    """
+    Imprime los videos del requerimiento 1 con los datos trending date, title, cahnnel, publish time
+    views, likes, dislikes
+    """ 
     for video in video_list['elements']: 
         print('Trending date:', video['trending_date'], '––Title:', video['title'], '––Channel:', video['channel_title'], '––Publish time:', video['publish_time'], '––Views:', video['views'], '––Likes:', video['likes'], '––Dislikes:', video['dislikes'])
         input('Presione enter para ver el siguente video')
@@ -95,6 +108,9 @@ def printTopVideos(video_list):
     print('Fin\n')
 
 def printTopVideosTags(list_vid_tag): 
+    """
+    Imprime los videos del requerimiento 4 con los datos title, channel, publish time, views, likes, dislikes, tags
+    """ 
     for video in list_vid_tag['elements']:
         print('Title:',  video['title'], '––Channel:', video['channel_title'],'––Publish Time: ', video['publish_time'], '––Views:', video['views'], '––Likes:', video['likes'], '––Dislikes:', video['dislikes'], '––Tags:', video['tags'])
         input('Presione enter para ver el siguente video')
