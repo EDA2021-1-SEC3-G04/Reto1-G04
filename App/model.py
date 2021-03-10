@@ -223,6 +223,13 @@ def compVideosByViews(video1, video2):
     else:
         return 0
 
+def cmpVideoId(id1, id2):
+    if id1['video_id'] < id2['video_id']:
+        return -1
+    elif id1['video_id'] > id2['video_id']:
+        return 1
+    else:
+        return 0
 
 # Funciones de ordenamiento
 
@@ -308,8 +315,18 @@ def findWithTags(list_vid_countries, tag):
 
 
 def findMostLikes(list_by_likes, number):
-    last = lt.lastElement(list_by_likes)
-    topVideos = lt.subList(list_by_likes, lt.size(list_by_likes) - number + 1, number)
+    pos = lt.size(list_by_likes)
+    topVideos = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpVideoId)
+    lt.addFirst(topVideos, lt.lastElement(list_by_likes))
+    number -= 1
+    while number > 0:
+        current_element = lt.getElement(list_by_likes, pos)
+        pos_present = lt.isPresent(topVideos, current_element)
+        if pos_present == 0:
+            lt.addLast(topVideos, current_element)
+            number -= 1
+        pos -= 1
+        
     return topVideos
     
 # def sortVideosSelection(catalog, size):
