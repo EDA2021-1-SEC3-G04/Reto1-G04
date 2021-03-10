@@ -41,7 +41,7 @@ assert cf
 
 def newCatalog():
     """
-    Se define la estructura de un catálogo de videos. El catálogo tendrá tres listas, una para los videos, otra para las categorias de los mismos y otra para los paises de los mismos.
+    Se define la estructura de un catálogo de videos. El catálogo tendrá tres 4, una para los videos, una para los category ids, otra para las categorias de los mismos y otra para los paises de los mismos.
     """
     catalog = {'videos': None,
                'by_countries': None,
@@ -272,9 +272,9 @@ def findMostLikes(list_by_likes, number):
     """
     pos = lt.size(list_by_likes)
     topVideos = lt.newList(datastructure='ARRAY_LIST', cmpfunction=cmpVideoId)
-    lt.addFirst(topVideos, lt.lastElement(list_by_likes))
+    lt.addLast(topVideos, lt.lastElement(list_by_likes))
     number -= 1
-    while number > 0:
+    while number > 0 and pos > 0:
         current_element = lt.getElement(list_by_likes, pos)
         pos_present = lt.isPresent(topVideos, current_element)
         if pos_present == 0:
