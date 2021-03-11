@@ -145,9 +145,14 @@ while True:
         number = int(input("Buscando los top: "))
         country = input("Pais a consultar los top " + str(number) + " videos: ")
         category = input("Categoria a consultar los top " + str(number) + " videos: ")
-        result = controller.topCountryCategory(catalog, number, country, category)
-        print("\nLos top", number, "videos de", country, "&", category, "son:\n")
-        printTopVideos(result)
+        valid_category = controller.getId(catalog['category-id'], category)
+        valid_country = controller.getCountry(catalog['by_countries'], country)
+        if valid_category is not None and valid_country is not None:
+            result = controller.topCountryCategory(catalog, number, country, category)
+            print("\nLos top", number, "videos de", country, "&", category, "son:\n")
+            printTopVideos(result)
+        else:
+            print('Pais o categoria no válida')
         
 
     elif int(inputs[0]) == 3:
