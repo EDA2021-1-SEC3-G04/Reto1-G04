@@ -197,7 +197,7 @@ def findTopVideo(category_list):
     Con esa lista determina cuale de los videos ha tenido más dias trending. 
     """
     pos = 1
-    reps_per_video = []
+    reps_per_video = lt.newList(datastructure='ARRAY_LIST')
     current_reps = 1
     while pos < lt.size(category_list) - 1:
         current_elem = lt.getElement(category_list, pos)
@@ -206,15 +206,15 @@ def findTopVideo(category_list):
         if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
-            reps_per_video.append(
+            lt.addLast(reps_per_video,
                 {'video': current_elem, 'reps': current_reps})
             current_reps = 1
 
         pos += 1
 
-    top_video = []
+    top_video = ""
     top_reps = 0
-    for item in reps_per_video:
+    for item in lt.iterator(reps_per_video):
         if item['reps'] > top_reps:
             top_reps = item['reps']
             top_video = item['video']
@@ -229,7 +229,7 @@ def findTopVideoCountries(country_list):
     Con esa lista determina cuale de los videos ha tenido más dias trending. 
     """
     pos = 1
-    reps_per_video = []
+    reps_per_video = lt.newList(datastructure='ARRAY_LIST')
     current_reps = 1
     while pos < lt.size(country_list) - 1:
         current_elem = lt.getElement(country_list, pos)
@@ -238,15 +238,14 @@ def findTopVideoCountries(country_list):
         if current_elem['video_id'] != '#NAME?' and current_elem['video_id'] == next_elem['video_id']:
             current_reps += 1
         else:
-            reps_per_video.append(
-                {'video': current_elem, 'reps': current_reps})
+            lt.addLast(reps_per_video, {'video': current_elem, 'reps': current_reps})
             current_reps = 1
 
         pos += 1
 
-    top_video = []
+    top_video = ""
     top_reps = 0
-    for item in reps_per_video:
+    for item in lt.iterator(reps_per_video):
         if item['reps'] > top_reps:
             top_reps = item['reps']
             top_video = item['video']
